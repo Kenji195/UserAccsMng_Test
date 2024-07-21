@@ -3,6 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+Route::post('login', 
+[App\Http\Controllers\UserRegistryController::class, 'login']);
+
+
 Route::get('allUsers', 
 [App\Http\Controllers\UserRegistryController::class, 'allUsers']);
 

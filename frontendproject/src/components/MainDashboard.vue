@@ -88,7 +88,7 @@
             }
         },
         mounted() {
-            console.log('User registries were mounted')
+            console.log('User registries were mounted');
         }
     }
 </script>

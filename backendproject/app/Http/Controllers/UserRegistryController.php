@@ -7,6 +7,31 @@ use App\Models\UserRegistry;
 
 class UserRegistryController extends Controller
 {
+    public function login(Request $request) {
+        if (UserRegistry::where('email', $request->email)->exists()) {
+            $userRegistry = UserRegistry::where('email', $request->email)->first();
+            if (strcmp($userRegistry->password, $request->password) == 0) {
+                return response()->json([
+                'message' => 'Welcome!',
+                'code' => 200
+                ], 200);
+            }
+            else {
+                return response()->json([
+                'message' => 'Wrong credentials',
+                'code' => 400
+                ], 400);
+            }
+        }
+        else {
+            return response()->json([
+            'message' => 'Wrong credentials',
+            'code' => 400
+            ], 400);
+        }
+    }
+
+
     public function allUsers() {
         $userRegistries = UserRegistry::all();
         return response()->json([
@@ -15,6 +40,7 @@ class UserRegistryController extends Controller
             'code' => 200
         ]);
     }
+
 
     public function getUser($id) {
         $userRegistry = UserRegistry::find($id);

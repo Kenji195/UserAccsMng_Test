@@ -6,15 +6,22 @@
                     <fieldset>
                         <div class="form-group">
                             <label class="form-label mt-4">Username</label>
-                            <input type="text" class="form-control" v-model="userRegistry.username" placeholder="Username">
+                            <v-text-field type="text" bg-color="white" v-model="userRegistry.username" placeholder="Username..."></v-text-field>
                         </div>
                         <div class="form-group">
                             <label class="form-label mt-4">Email</label>
-                            <input type="text" class="form-control" v-model="userRegistry.email" placeholder="Email">
+                            <v-text-field type="text" bg-color="white" v-model="userRegistry.email" placeholder="Email address..."></v-text-field>
                         </div>
                         <div class="form-group">
                             <label class="form-label mt-4">Password</label>
-                            <input type="text" class="form-control" v-model="userRegistry.password" placeholder="Password">
+                            <v-text-field :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+                            :type="visible ? 'text' : 'password'" bg-color="white" v-model="userRegistry.password" placeholder="Password..." @click:append-inner="visible = !visible"></v-text-field>
+                        </div>
+                        <!---->
+                        <div class="form-group">
+                            <label class="form-label mt-4">Repeat password</label>
+                            <v-text-field :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+                            :type="visible ? 'text' : 'password'" bg-color="white" v-model="userRegistry.repeatpassword" placeholder="Repeat inputted password..." @click:append-inner="visible = !visible"></v-text-field>
                         </div>
 
                         
@@ -53,6 +60,7 @@
                 username: '',
                 email: '',
                 password: '',
+                repeatpassword: '',
                 notifs: [],
                 errors: []
             }
@@ -69,6 +77,9 @@
                 if (!this.userRegistry.password) {
                     this.errors.push("Please fill the Password field")
                 }
+                else if (this.userRegistry.password.localeCompare(this.userRegistry.repeatpassword)) {
+                    this.errors.push("You did not repeat your password correctly")
+                }
 
                 if (!this.errors.length) {
                     let formData = new FormData();
@@ -83,6 +94,7 @@
                             this.userRegistry.username = '';
                             this.userRegistry.email = '';
                             this.userRegistry.password = '';
+                            this.userRegistry.repeatpassword = '';
                             this.notifs.push(response.data.message);
                         } else {
                             console.log('There was an error');
