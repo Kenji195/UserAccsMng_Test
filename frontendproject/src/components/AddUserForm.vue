@@ -1,4 +1,5 @@
 <template>
+    <SessionVerifier/>
     <div class="container">
         <div class="row">
             <div class="col-md-6">
@@ -52,6 +53,8 @@
 
 <script>
     import axios from 'axios';
+    import SessionVerifier from './SessionVerifier.vue';
+
     export default {
         name: 'AddUserForm',
         data() {
@@ -105,6 +108,9 @@
                     })
                 }
             }
+        },
+        components: {
+            SessionVerifier
         }
     }
 </script>

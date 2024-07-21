@@ -86,7 +86,7 @@
                         </div>
 
 
-                        <v-btn @click.prevent="addUser"
+                        <v-btn @click.prevent="register"
                             class="mx-auto text-center text-h5"
                             color="blue"
                             width="100%"
@@ -131,7 +131,7 @@
             }
         },
         methods: {
-            async addUser() {
+            async register() {
                 this.errors = [];
                 if (!this.userRegistry.username) {
                     this.errors.push("Please fill the Username field")
@@ -151,11 +151,10 @@
                     formData.append('username', this.userRegistry.username);
                     formData.append('email', this.userRegistry.email);
                     formData.append('password', this.userRegistry.password);
-
-                    let url = 'http://127.0.0.1:8000/api/insertUser';
+                    let url = 'http://127.0.0.1:8000/api/register';
                     await axios.post(url, formData).then((response) => {
-                        console.log(response);
                         if (response.status == 200) {
+                            localStorage.setItem('sessionToken', response.data.access_token);
                             this.$router.push('/');
                         } else {
                             console.log('There was an error');

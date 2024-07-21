@@ -1,4 +1,5 @@
 <template>
+    <SessionVerifier/>
     <div class="container">                        
         <div class="alert alert-danger mt-4" v-if="errors.length">
             <ul class="mb-0">
@@ -14,7 +15,7 @@
                     <th scope="col">ID</th>
                     <th scope="col">Username</th>
                     <th scope="col">Email</th>
-                    <th scope="col">Password</th>
+                    <!--<th scope="col">Password</th>-->
                     <th scope="col">Edit</th>
                     <th scope="col">Delete</th>
                 </tr>
@@ -25,7 +26,7 @@
                     <th scope="row">{{ userRegistry.id }}</th>
                     <th scope="col">{{ userRegistry.username }}</th>
                     <th scope="row">{{ userRegistry.email }}</th>
-                    <th scope="row">{{ userRegistry.password }}</th>
+                    <!--<th scope="row">{{ userRegistry.password }}</th>-->
                     <th scope="row">
                         <router-link :to="{ name: 'EditUserForm', params: { id: userRegistry.id } }" class="btn btn-info btn-sm">Edit</router-link>
                     </th>
@@ -48,6 +49,7 @@
 
 <script>
     import axios from 'axios';
+    import SessionVerifier from './SessionVerifier.vue';
 
     export default {
         name: 'MainDashboard',
@@ -63,17 +65,21 @@
         },
         methods: {
             async getUsers() {
+                this.notifs = [];
+                this.errors = [];
                 let url = 'http://127.0.0.1:8000/api/allUsers';
                 await axios.get(url).then(response => {
                     this.userRegistries = response.data.userRegistries;
                     console.log(this.userRegistries);
                     }
                 ).catch(error => {
-                    this.errors.push(error)
+                    this.errors.push(error);
                 })
             },
 
             async deleteUser(id) {
+                this.notifs = [];
+                this.errors = [];
                 if(confirm(`This operation cannot be undone!\r\nAre you sure about deleting registry ${id}?`)) {
                 let url = `http://127.0.0.1:8000/api/deleteUser/${id}`;
                 await axios.delete(url).then(response => {
@@ -89,6 +95,9 @@
         },
         mounted() {
             console.log('User registries were mounted');
+        },
+        components: {
+            SessionVerifier
         }
     }
 </script>

@@ -114,8 +114,8 @@
                     formData.append('password', this.userRegistry.password);
                     let url = 'http://127.0.0.1:8000/api/login';
                     await axios.post(url, formData).then((response) => {
-                        console.log(response);
-                        if (response.data.code == 200) {
+                        if (response.status == 200) {
+                            localStorage.setItem('sessionToken', response.data.access_token);
                             this.$router.push('/');
                         } else {
                             console.log('There was an error');

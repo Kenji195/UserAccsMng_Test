@@ -1,4 +1,5 @@
 <template>
+    <SessionVerifier/>
     <div class="container">
         <div class="row">
             <div class="col-md-6">
@@ -10,17 +11,18 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label mt-4">Username</label>
-                            <input type="text" class="form-control" v-model="userRegistry.username" placeholder="Username">
+                            <v-text-field type="text" bg-color="white" v-model="userRegistry.username" placeholder="Username..."></v-text-field>
                         </div>
                         <div class="form-group">
                             <label class="form-label mt-4">Email</label>
-                            <input type="text" class="form-control" v-model="userRegistry.email" placeholder="Email">
+                            <v-text-field type="text" bg-color="white" v-model="userRegistry.email" placeholder="Email address..."></v-text-field>
                         </div>
+                        <!--
                         <div class="form-group">
                             <label class="form-label mt-4">Password</label>
-                            <input type="text" class="form-control" v-model="userRegistry.password" placeholder="Password">
-                        </div>
-
+                            <input type="text" class="form-control" v-model="userRegistry.password" placeholder="Password (may be your old password)">
+                        </div>-->
+                        
                         
                         <div class="alert alert-danger mt-4" v-if="errors.length">
                             <ul class="mb-0">
@@ -49,6 +51,8 @@
 
 <script>
     import axios from 'axios';
+    import SessionVerifier from './SessionVerifier.vue';
+
     export default {
         name: 'EditUserForm',
         data() {
@@ -72,7 +76,6 @@
                     this.userRegistry = response.data;
                     this.userRegistry.username = response.data.username;
                     this.userRegistry.email = response.data.email;
-                    this.userRegistry.password = response.data.password;
                 })
             },
             async editUser() {
@@ -82,17 +85,17 @@
                 }
                 if (!this.userRegistry.email) {
                     this.errors.push("Please fill the Email field")
-                }
+                }/*
                 if (!this.userRegistry.password) {
                     this.errors.push("Please fill the Password field")
-                }
+                }//*/
 
                 if (!this.errors.length) {
                     let formData = new FormData();
                     formData.append('id', this.userRegistry.id);
                     formData.append('username', this.userRegistry.username);
                     formData.append('email', this.userRegistry.email);
-                    formData.append('password', this.userRegistry.password);
+                    //formData.append('password', this.userRegistry.password);
 
                     let url = `http://127.0.0.1:8000/api/editUser/${this.$route.params.id}`;
                     await axios.post(url, formData).then((response) => {
@@ -108,6 +111,9 @@
                     })
                 }
             }
+        },
+        components: {
+            SessionVerifier
         }
         
     }

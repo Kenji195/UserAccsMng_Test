@@ -15,6 +15,9 @@
         <li class="nav-item">
           <router-link class="nav-link" to="/AddUser">Add User</router-link>
         </li>
+        <li class="nav-item">
+          <button class="nav-link" @click.prevent="logout()">Log out</button>
+        </li>
       </ul>
     </div>
   </div>
@@ -22,10 +25,32 @@
 </template>
 
 <script>
+    import axios from 'axios';
     export default {
         name: 'TopNavbar',
         props: {
           title: String
+        },
+        methods: {
+          async logout() {
+            let token = localStorage.getItem('sessionToken');
+            if(token && confirm(`Are you sure about logging out?`)) {
+              localStorage.removeItem('sessionToken');
+              let url = 'http://127.0.0.1:8000/api/logout';
+              await axios.post(url, {}, {
+                  headers: {
+                      'Authorization': 'bearer ' + token
+                  }
+              }).then((response) => {
+                  if (response.status == 200) {
+                    this.$router.push('/LoginForm');
+                  }
+              }).catch(error => {
+                  alert('Error with the session, try logging in again: ' + error);
+                  this.$router.push('/LoginForm');
+              });
+            }
+          }
         }
     }
 </script>
