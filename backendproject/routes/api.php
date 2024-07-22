@@ -38,7 +38,7 @@ Route::middleware('auth:api')->post('/insertUser', [UserRegistryController::clas
 //Route::post('insertUser', [UserRegistryController::class, 'insertUser']);
 
 
-Route::middleware('auth:api')->post('/editUser', [UserRegistryController::class, 'editUser']);
+Route::middleware('auth:api')->post('/editUser/{id}', [UserRegistryController::class, 'editUser']);
 //Route::post('editUser/{id}', [UserRegistryController::class, 'editUser']);
 
 
