@@ -16,7 +16,8 @@ Route::middleware('auth:api')->post('/me', [UserRegistryController::class, 'me']
 //Route::post('me', [UserRegistryController::class, 'me']);
 
 
-Route::post('refresh', [UserRegistryController::class, 'refresh']);
+Route::middleware('auth:api')->post('/refresh', [UserRegistryController::class, 'refresh']);
+//Route::post('refresh', [UserRegistryController::class, 'refresh']);
 
 
 Route::middleware('auth:api')->post('/logout', [UserRegistryController::class, 'logout']);
@@ -25,23 +26,23 @@ Route::middleware('auth:api')->post('/logout', [UserRegistryController::class, '
 //------------------------------------------------------------
 
 
-Route::get('allUsers', 
-[UserRegistryController::class, 'allUsers']);
+Route::middleware('auth:api')->post('allUsers', [UserRegistryController::class, 'allUsers']);
+//Route::get('allUsers', [UserRegistryController::class, 'allUsers']);
 
 
-Route::get('getUser/{id}', 
-[UserRegistryController::class, 'getUser']);
+Route::middleware('auth:api')->post('/getUser/{id}', [UserRegistryController::class, 'getUser']);
+//Route::get('getUser/{id}', [UserRegistryController::class, 'getUser']);
 
 
-Route::post('insertUser', 
-[UserRegistryController::class, 'insertUser']);
+Route::middleware('auth:api')->post('/insertUser', [UserRegistryController::class, 'insertUser']);
+//Route::post('insertUser', [UserRegistryController::class, 'insertUser']);
 
 
-Route::post('editUser/{id}', 
-[UserRegistryController::class, 'editUser']);
+Route::middleware('auth:api')->post('/editUser', [UserRegistryController::class, 'editUser']);
+//Route::post('editUser/{id}', [UserRegistryController::class, 'editUser']);
 
 
-Route::delete('deleteUser/{id}', 
-[UserRegistryController::class, 'deleteUser']);
+Route::middleware('auth:api')->post('/deleteUser/{id}', [UserRegistryController::class, 'deleteUser']);
+//Route::delete('deleteUser/{id}', [UserRegistryController::class, 'deleteUser']);
 
 

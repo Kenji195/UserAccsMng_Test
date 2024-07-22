@@ -35,12 +35,13 @@
                                 <v-text-field
                                     :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
                                     :type="visible ? 'text' : 'password'"
+                                    :id="passwordField"
                                     density="compact"
                                     placeholder="Enter your password"
                                     prepend-inner-icon="mdi-lock-outline"
                                     variant="outlined"
                                     v-model="userRegistry.password"
-                                    @click:append-inner="visible = !visible">
+                                    @click:append-inner="visible = !visible; visible ? 'text' : 'password'">
                                 </v-text-field>
                             </div>
                         </fieldset>
@@ -88,6 +89,7 @@
 
 <script>
     import axios from 'axios';
+    
     export default {
         name: 'LoginForm',
         data() {

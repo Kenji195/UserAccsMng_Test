@@ -75,7 +75,8 @@ class UserRegistryController extends Controller
         return $this->respondWithToken($token);
     }
 
-    public function loginOld2(Request $request) {
+    public function loginOld2(Request $request) 
+    {
         if (UserRegistry::where('email', $request->email)->exists()) {
             $userRegistry = UserRegistry::where('email', $request->email)->first();
             if (strcmp($userRegistry->password, $request->password) == 0) {
@@ -133,6 +134,17 @@ class UserRegistryController extends Controller
 
 
     public function allUsers() {
+        //Verify session to validate operation or not ------------------------------------------
+        $user = auth()->user();
+        if (!$user) {return response()->json([
+            'message' => 'Unauthorized access, may be wrong credential or illegal attempt',
+            'code' => 400
+        ], 400);
+        }
+        //Verify session to validate operation or not ------------------------------------------
+
+
+        
         $userRegistries = UserRegistry::select('id', 'username', 'email')->get();
         return response()->json([
             'userRegistries' => $userRegistries,
@@ -143,12 +155,33 @@ class UserRegistryController extends Controller
 
 
     public function getUser($id) {
-        $userRegistry = UserRegistry::find($id);
+        //Verify session to validate operation or not ------------------------------------------
+        $user = auth()->user();
+        if (!$user) {return response()->json([
+            'message' => 'Unauthorized access, may be wrong credential or illegal attempt',
+            'code' => 400
+        ], 400);
+        }
+        //Verify session to validate operation or not ------------------------------------------
+
+
+        
+        $userRegistry = UserRegistry::select('id', 'username', 'email')->find($id);
         return response()->json($userRegistry);
     }
 
 
     public function insertUser(Request $request) {
+        //Verify session to validate operation or not ------------------------------------------
+        $user = auth()->user();
+        if (!$user) {return response()->json([
+            'message' => 'Unauthorized access, may be wrong credential or illegal attempt',
+            'code' => 400
+        ], 400);
+        }
+        //Verify session to validate operation or not ------------------------------------------
+
+
         if (UserRegistry::where('username', $request->username)->exists()) {
             return response()->json([
                 'message' => 'There is already a registry with that Username',
@@ -176,6 +209,16 @@ class UserRegistryController extends Controller
 
 
     public function editUser($id, Request $request) {
+        //Verify session to validate operation or not ------------------------------------------
+        $user = auth()->user();
+        if (!$user) {return response()->json([
+            'message' => 'Unauthorized access, may be wrong credential or illegal attempt',
+            'code' => 400
+        ], 400);
+        }
+        //Verify session to validate operation or not ------------------------------------------
+
+        
         $userRegistry = UserRegistry::where('id', $id)->first();
 
         if (!$userRegistry) {
@@ -199,6 +242,16 @@ class UserRegistryController extends Controller
 
 
     public function deleteUser($id) {
+        //Verify session to validate operation or not ------------------------------------------
+        $user = auth()->user();
+        if (!$user) {return response()->json([
+            'message' => 'Unauthorized access, may be wrong credential or illegal attempt',
+            'code' => 400
+        ], 400);
+        }
+        //Verify session to validate operation or not ------------------------------------------
+
+        
         $userRegistry = UserRegistry::find($id);
         if ($userRegistry) {
             $userRegistry->delete();

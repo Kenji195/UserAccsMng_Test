@@ -55,6 +55,38 @@
     import axios from 'axios';
     import SessionVerifier from './SessionVerifier.vue';
 
+    async function verifyUser() {
+        let token = localStorage.getItem('sessionToken');
+        let url = 'http://127.0.0.1:8000/api/me';
+        if (!token) {
+            //this.$router.push('/LoginForm');
+            return false;
+        }
+        else {
+            await axios.post(url, {}, {
+                headers: {
+                    'Authorization': 'bearer ' + token
+                }
+            }).then((response) => {
+                console.log(response);
+                if (response.status == 200) {
+                    if (!response.data.id) {
+                        alert('Session expired');
+                        this.$router.push('/LoginForm');
+                        return false;
+                    }
+                    return true;
+                }
+            }).catch(error => {
+                alert('Error with the session, try logging in again: ' + error);
+                this.$router.push('/LoginForm');
+                return false;
+            });
+        }
+    }
+
+
+
     export default {
         name: 'AddUserForm',
         data() {
@@ -70,6 +102,10 @@
         },
         methods: {
             async addUser() {
+                if (!verifyUser()) {
+                    return;
+                }
+
                 this.errors = [];
                 if (!this.userRegistry.username) {
                     this.errors.push("Please fill the Username field")
@@ -85,13 +121,17 @@
                 }
 
                 if (!this.errors.length) {
+                    let token = localStorage.getItem('sessionToken');
                     let formData = new FormData();
                     formData.append('username', this.userRegistry.username);
                     formData.append('email', this.userRegistry.email);
                     formData.append('password', this.userRegistry.password);
 
                     let url = 'http://127.0.0.1:8000/api/insertUser';
-                    await axios.post(url, formData).then((response) => {
+                    await axios.post(url, formData, {
+                        headers: {
+                            'Authorization': 'bearer ' + token
+                        }}).then((response) => {
                         console.log(response);
                         if (response.status == 200) {
                             this.userRegistry.username = '';

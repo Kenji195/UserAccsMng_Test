@@ -51,6 +51,37 @@
     import axios from 'axios';
     import SessionVerifier from './SessionVerifier.vue';
 
+    async function verifyUser() {
+        let url = 'http://127.0.0.1:8000/api/me';
+        let token = localStorage.getItem('sessionToken');
+        if (!token) {
+            //this.$router.push('/LoginForm');
+            return false;
+        }
+        else {
+            await axios.post(url, {}, {
+                headers: {
+                    'Authorization': 'bearer ' + token
+                }
+            }).then((response) => {
+                console.log(response);
+                if (response.status == 200) {
+                    if (!response.data.id) {
+                        alert('Session expired');
+                        this.$router.push('/LoginForm');
+                        return false;
+                    }
+                    return true;
+                }
+            }).catch(error => {
+                alert('Error with the session, try logging in again: ' + error);
+                this.$router.push('/LoginForm');
+                return false;
+            });
+        }
+    }
+
+
     export default {
         name: 'MainDashboard',
         data() {
@@ -65,10 +96,17 @@
         },
         methods: {
             async getUsers() {
+                if (!verifyUser()) {
+                    return;
+                }
                 this.notifs = [];
                 this.errors = [];
+                let token = localStorage.getItem('sessionToken');
                 let url = 'http://127.0.0.1:8000/api/allUsers';
-                await axios.get(url).then(response => {
+                await axios.post(url, {}, {
+                        headers: {
+                            'Authorization': 'bearer ' + token
+                        }}).then(response => {
                     this.userRegistries = response.data.userRegistries;
                     console.log(this.userRegistries);
                     }
@@ -77,12 +115,21 @@
                 })
             },
 
+
+
             async deleteUser(id) {
+                if (!verifyUser()) {
+                    return;
+                }
                 this.notifs = [];
                 this.errors = [];
                 if(confirm(`This operation cannot be undone!\r\nAre you sure about deleting registry ${id}?`)) {
+                let token = localStorage.getItem('sessionToken');
                 let url = `http://127.0.0.1:8000/api/deleteUser/${id}`;
-                await axios.delete(url).then(response => {
+                await axios.post(url, {}, {
+                        headers: {
+                            'Authorization': 'bearer ' + token
+                        }}).then(response => {
                     if (response.data.code == 200) {
                         this.notifs.push(response.data.message);
                         this.getUsers();

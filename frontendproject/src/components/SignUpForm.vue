@@ -99,7 +99,7 @@
 
                     <router-link 
                             class="nav-link text-white text-decoration-none"
-                            to="/SignUpForm"
+                            to="/LoginForm"
                             rel="noopener noreferrer">
                         <v-btn
                             class="m-1 mt-5 p-2 text-subtitle-1"
