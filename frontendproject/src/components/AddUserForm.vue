@@ -102,6 +102,8 @@
         },
         methods: {
             async addUser() {
+                this.notifs = [];
+                this.errors = [];
                 if (!verifyUser()) {
                     return;
                 }

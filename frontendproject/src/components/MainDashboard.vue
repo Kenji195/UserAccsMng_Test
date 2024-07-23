@@ -92,13 +92,13 @@
             }
         },
         created() {
+            if (!localStorage.getItem('sessionToken')) {
+                this.$router.push('/LoginForm');
+            }
             this.getUsers();
         },
         methods: {
             async getUsers() {
-                if (!verifyUser()) {
-                    return;
-                }
                 this.notifs = [];
                 this.errors = [];
                 let token = localStorage.getItem('sessionToken');
