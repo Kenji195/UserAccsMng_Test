@@ -75,7 +75,7 @@ You may login with one of these credentials:
 - Password: **expert**
 
 - Email address: **newbie@gmail.com**
-- Password: **newbie
+- Password: **newbie**
 
 - Email address: **user1@gmail.com**
 - Password: **user1**
