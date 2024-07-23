@@ -125,3 +125,4 @@ Although in the repository, the two folders are separate, you may create a folde
 - UserManagement_Test
 	- backendproject
 	- frontenproject
+The system does not verify ANY text field, which means a username can be empty spaces, an email can be just a bunch of special characters, and a password can be a mix of characters from different languages. Although it is encouraged to only use alphabetic characters and the expected characters from an email address, to avoid the risk of getting a bug or glitch when sending a request.
