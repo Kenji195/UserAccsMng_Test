@@ -1,5 +1,3 @@
-Setup instructions, including environment setup, database configuration, and how to run tests.
-
 # Programs and tools installed
 This is a brief listing of all the tools that were used in the creation of this system, however not all of them are required for make use of it. Nested elements are for elements that are, in one way or another, part of another, so it should be included when installing these programs or when downloading/pulling the project folders.
 
